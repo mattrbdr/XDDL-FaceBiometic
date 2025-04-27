@@ -1,0 +1,9 @@
+suspect_image,criminal_image,similarity,correlation,hist_similarity,ssim,facial_features,image_quality,quality_threshold,matching_points,is_match
+image1.JPG,7fc05c8a15a6ca2f-580x0-1.webp,0.3982,0.5949,0.0942,0.1494,0.0,0.25,0.25,[],True
+image2.png,image1.png,0.1657,0.3183,-0.0732,0.1092,0.6602,1.0,0.25,"[('mouth', np.float64(0.6601962775812764))]",False
+image2.png,7fc05c8a15a6ca2f-580x0-1.webp,0.0929,0.1398,-0.0601,0.1404,0.0,0.75,0.25,[],False
+image2.png,xavier-dupont-de-ligonnes-cet-etrange-tic-qui-le-trahit.jpeg,0.0743,0.1106,-0.0236,0.0847,0.0,0.75,0.25,[],False
+image1.JPG,image1.png,0.0409,0.0927,-0.0456,0.0703,0.0,0.5,0.375,[],False
+image2.png,image2.JPG,0.0387,0.0529,0.0014,0.0685,0.0,0.5,0.375,[],False
+image1.JPG,image2.JPG,0.0041,0.0509,-0.1054,0.0613,0.0,0.0,0.5,[],False
+image1.JPG,xavier-dupont-de-ligonnes-cet-etrange-tic-qui-le-trahit.jpeg,-0.1591,-0.2818,-0.0022,0.0694,0.0,0.25,0.25,[],False

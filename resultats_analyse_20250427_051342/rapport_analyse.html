@@ -1,0 +1,83 @@
+
+    <!DOCTYPE html>
+    <html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Rapport d'analyse faciale</title>
+        <style>
+            body { font-family: Arial, sans-serif; margin: 20px; }
+            .header { background-color: #4b6cb7; color: white; padding: 10px; border-radius: 5px; }
+            .section { margin-top: 20px; border: 1px solid #ddd; padding: 15px; border-radius: 5px; }
+            .match { color: green; font-weight: bold; }
+            .no-match { color: red; }
+            table { width: 100%; border-collapse: collapse; }
+            th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+            th { background-color: #f2f2f2; }
+            tr:nth-child(even) { background-color: #f9f9f9; }
+            .result-img { max-width: 100%; height: auto; margin-top: 10px; }
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            <h1>Rapport d'analyse faciale - XDDL</h1>
+            <p>Date de l'analyse: 27/04/2025 05:13:49</p>
+        </div>
+        
+        <div class="section">
+            <h2>Résumé de l'analyse</h2>
+            <p>Nombre total de comparaisons: 2</p>
+            <p>Nombre de correspondances trouvées: 1</p>
+    
+            <p class="match">✓ Meilleure correspondance: image1.JPG correspond à image1.png avec une similarité de 0.0031</p>
+        </div>
+        
+        <div class="section">
+            <h2>Meilleure correspondance</h2>
+            <p>Score de similarité: 0.0031</p>
+            <p>Corrélation: -0.06129999831318855</p>
+            <p>Similarité d'histogramme: 0.0047</p>
+            <img class="result-img" src="comparaison_image1.JPG_image1.png.png" alt="Meilleure correspondance">
+        </div>
+        
+        <div class="section">
+            <h2>Toutes les comparaisons</h2>
+            <table>
+                <tr>
+                    <th>Image suspecte</th>
+                    <th>Image criminelle</th>
+                    <th>Score de similarité</th>
+                    <th>Correspondance</th>
+                </tr>
+    
+                <tr>
+                    <td>image1.JPG</td>
+                    <td>image1.png</td>
+                    <td>0.0031</td>
+                    <td class="no-match">✗ False</td>
+                </tr>
+        
+                <tr>
+                    <td>image1.JPG</td>
+                    <td>image2.JPG</td>
+                    <td>-0.041</td>
+                    <td class="no-match">✗ False</td>
+                </tr>
+        
+            </table>
+        </div>
+        
+        <div class="section">
+            <h2>Comment interpréter les résultats</h2>
+            <p>Cette analyse utilise des techniques de comparaison faciale pour déterminer si le suspect correspond à un individu connu:</p>
+            <ul>
+                <li><strong>Score de similarité</strong>: Une valeur entre 0 et 1, où 1 représente une correspondance parfaite. Un score supérieur à 0.35 est considéré comme une correspondance potentielle.</li>
+                <li><strong>Corrélation</strong>: Mesure la similarité directe entre les pixels des visages.</li>
+                <li><strong>Similarité d'histogramme</strong>: Compare la distribution des intensités de pixels entre les visages.</li>
+                <li><strong>SSIM (si disponible)</strong>: Indice de similarité structurelle qui évalue la qualité perçue entre deux images.</li>
+            </ul>
+            <p>Les résultats doivent être interprétés par un expert et ne constituent pas une preuve définitive d'identité.</p>
+        </div>
+    </body>
+    </html>
+    

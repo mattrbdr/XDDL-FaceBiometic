@@ -1,0 +1,17 @@
+
+COMPARAISON AVEC IMAGE COMPOSITE DE XAVIER DUPONT DE LIGONNÈS
+=============================================================
+Image du suspect: image1.JPG
+Date de l'analyse: 27/04/2025 06:10:28
+
+RÉSULTATS:
+- Score global: 0.1771
+- Corrélation: 0.2117999941110611
+- Similarité d'histogramme: 0.222
+- SSIM: 0.1288
+- Similarité des points faciaux: 0.0
+
+CONCLUSION:
+PAS DE MATCH - Pas de correspondance suffisante
+
+Points caractéristiques correspondants:

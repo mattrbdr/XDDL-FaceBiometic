@@ -1,0 +1,486 @@
+
+    <!DOCTYPE html>
+    <html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Rapport d'analyse biométrique faciale - XDDL</title>
+        <style>
+            :root {
+                --primary-color: #1a3a6e;
+                --secondary-color: #2c5aa0;
+                --accent-color: #e63946;
+                --light-bg: #f8f9fa;
+                --dark-bg: #343a40;
+                --success-color: #2e7d32;
+                --warning-color: #ff9800;
+                --danger-color: #c62828;
+            }
+            
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                line-height: 1.6;
+                color: #333;
+                background-color: #f5f5f5;
+                margin: 0;
+                padding: 0;
+            }
+            
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 20px;
+                background-color: white;
+                box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            }
+            
+            .header {
+                background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+                color: white;
+                padding: 20px;
+                border-radius: 8px 8px 0 0;
+                margin-bottom: 30px;
+                position: relative;
+                overflow: hidden;
+            }
+            
+            .header::after {
+                content: "";
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                width: 150px;
+                height: 150px;
+                background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="rgba(255,255,255,0.1)"/></svg>');
+                background-size: cover;
+                opacity: 0.4;
+            }
+            
+            .header h1 {
+                font-size: 28px;
+                font-weight: 600;
+                margin-bottom: 10px;
+            }
+            
+            .header p {
+                font-size: 16px;
+                opacity: 0.9;
+            }
+            
+            .section {
+                margin: 30px 0;
+                padding: 25px;
+                border-radius: 8px;
+                background-color: white;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+                border-left: 5px solid var(--primary-color);
+            }
+            
+            .section h2 {
+                color: var(--primary-color);
+                font-size: 22px;
+                margin-bottom: 20px;
+                padding-bottom: 10px;
+                border-bottom: 1px solid #eee;
+            }
+            
+            .match {
+                color: var(--success-color);
+                font-weight: bold;
+            }
+            
+            .no-match {
+                color: var(--danger-color);
+            }
+            
+            .highlight {
+                background-color: #fffde7;
+                padding: 2px 5px;
+                border-radius: 3px;
+                font-weight: 500;
+            }
+            
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 20px 0;
+                font-size: 15px;
+            }
+            
+            th, td {
+                border: 1px solid #ddd;
+                padding: 12px 15px;
+                text-align: left;
+            }
+            
+            th {
+                background-color: var(--primary-color);
+                color: white;
+                font-weight: 500;
+                text-transform: uppercase;
+                font-size: 13px;
+                letter-spacing: 0.5px;
+            }
+            
+            tr:nth-child(even) {
+                background-color: #f9f9f9;
+            }
+            
+            tr:hover {
+                background-color: #f1f1f1;
+            }
+            
+            .result-img {
+                max-width: 100%;
+                height: auto;
+                margin: 20px 0;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                transition: transform 0.3s ease;
+            }
+            
+            .result-img:hover {
+                transform: scale(1.02);
+            }
+            
+            .metrics-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 20px;
+                margin: 20px 0;
+            }
+            
+            .metric-card {
+                background-color: white;
+                padding: 15px;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+                text-align: center;
+                border: 1px solid #eee;
+            }
+            
+            .metric-value {
+                font-size: 24px;
+                font-weight: 600;
+                margin: 10px 0;
+                color: var(--primary-color);
+            }
+            
+            .metric-label {
+                font-size: 14px;
+                color: #666;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+            
+            .confidence-meter {
+                background-color: #e9ecef;
+                height: 20px;
+                border-radius: 10px;
+                margin: 20px 0;
+                overflow: hidden;
+                position: relative;
+            }
+            
+            .confidence-fill {
+                height: 100%;
+                background: linear-gradient(90deg, #ff9d00, #ff6161);
+                border-radius: 10px;
+                transition: width 1s ease-in-out;
+            }
+            
+            .footer {
+                text-align: center;
+                margin-top: 40px;
+                padding: 20px;
+                color: #666;
+                font-size: 14px;
+                border-top: 1px solid #eee;
+            }
+            
+            .badge {
+                display: inline-block;
+                padding: 5px 10px;
+                border-radius: 15px;
+                font-size: 12px;
+                font-weight: 600;
+                margin-right: 5px;
+                color: white;
+            }
+            
+            .badge-match {
+                background-color: var(--success-color);
+            }
+            
+            .badge-no-match {
+                background-color: var(--danger-color);
+            }
+            
+            .flex-container {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 20px;
+                margin: 20px 0;
+            }
+            
+            .flex-item {
+                flex: 1;
+                min-width: 300px;
+            }
+            
+            .alert {
+                padding: 15px;
+                border-radius: 5px;
+                margin: 20px 0;
+                font-weight: 500;
+            }
+            
+            .alert-warning {
+                background-color: #fff3cd;
+                border-left: 4px solid var(--warning-color);
+                color: #856404;
+            }
+            
+            .alert-success {
+                background-color: #d4edda;
+                border-left: 4px solid var(--success-color);
+                color: #155724;
+            }
+            
+            .alert-danger {
+                background-color: #f8d7da;
+                border-left: 4px solid var(--danger-color);
+                color: #721c24;
+            }
+            
+            .chart-container {
+                width: 100%;
+                height: 300px;
+                margin: 20px 0;
+                position: relative;
+            }
+            
+            @media (max-width: 768px) {
+                .container {
+                    padding: 10px;
+                }
+                
+                .header {
+                    padding: 15px;
+                }
+                
+                .section {
+                    padding: 15px;
+                }
+                
+                .metrics-grid {
+                    grid-template-columns: 1fr 1fr;
+                }
+            }
+            
+            @media print {
+                body {
+                    background-color: white;
+                }
+                
+                .container {
+                    box-shadow: none;
+                    max-width: 100%;
+                }
+                
+                .header {
+                    background: var(--primary-color) !important;
+                    -webkit-print-color-adjust: exact;
+                }
+                
+                .section {
+                    break-inside: avoid;
+                    box-shadow: none;
+                    border-left: 3px solid var(--primary-color);
+                }
+            }
+            
+            /* Ajout d'animations */
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            
+            .section {
+                animation: fadeIn 0.5s ease-out forwards;
+            }
+            
+            .section:nth-child(2) { animation-delay: 0.1s; }
+            .section:nth-child(3) { animation-delay: 0.2s; }
+            .section:nth-child(4) { animation-delay: 0.3s; }
+            .section:nth-child(5) { animation-delay: 0.4s; }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>Rapport d'analyse biométrique faciale - XDDL</h1>
+                <p>Investigation sur la correspondance potentielle d'un suspect avec un criminel recherché</p>
+                <p>Date de l'analyse: 27/04/2025 05:27:23</p>
+            </div>
+            
+            <div class="section">
+                <h2>Résumé de l'investigation</h2>
+                <div class="flex-container">
+                    <div class="flex-item">
+                        <p>Ce rapport présente les résultats d'une analyse biométrique faciale visant à déterminer si un suspect correspond à un individu recherché.</p>
+                        <ul>
+                            <li>Suspect analysé: <span class="highlight">image1.JPG</span></li>
+                            <li>Nombre total de comparaisons: <b>4</b></li>
+                            <li>Nombre de correspondances détectées: <b>1</b></li>
+                            <li>Seuil de correspondance: <b>0.35</b> (sur une échelle de 0 à 1)</li>
+                        </ul>
+                    </div>
+                    <div class="flex-item">
+    
+                        <div class="alert alert-success">
+                            <p>✓ Une correspondance significative a été détectée avec un niveau de confiance de 44%.</p>
+                        </div>
+                        <div class="confidence-meter">
+                            <div class="confidence-fill" style="width: 44%"></div>
+                        </div>
+                        <p class="match">Meilleure correspondance: image1.JPG correspond à 7fc05c8a15a6ca2f-580x0-1.webp avec une similarité de 0.4445</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>Analyse de la meilleure correspondance</h2>
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-label">Score global</div>
+                        <div class="metric-value">0.4445</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Corrélation</div>
+                        <div class="metric-value">0.7702999711036682</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Similarité d'histogramme</div>
+                        <div class="metric-value">0.2324</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Indice SSIM</div>
+                        <div class="metric-value">0.2222</div>
+                    </div>
+                </div>
+                
+                <p>Les images ci-dessous montrent la comparaison visuelle entre le suspect et la meilleure correspondance identifiée:</p>
+                <img class="result-img" src="comparaison_image1.JPG_7fc05c8a15a6ca2f-580x0-1.webp.png" alt="Meilleure correspondance">
+        
+            <div class="section">
+                <h2>Détails de toutes les comparaisons</h2>
+                <p>Le tableau ci-dessous présente l'ensemble des comparaisons effectuées, triées par degré de similarité:</p>
+                <table>
+                    <tr>
+                        <th>Image du suspect</th>
+                        <th>Image du criminel</th>
+                        <th>Score global</th>
+                        <th>Corrélation</th>
+                        <th>Similarité d'histogramme</th>
+                        <th>SSIM</th>
+                        <th>Résultat</th>
+                    </tr>
+    
+                    <tr>
+                        <td>image1.JPG</td>
+                        <td>7fc05c8a15a6ca2f-580x0-1.webp</td>
+                        <td><b>0.4445</b></td>
+                        <td>0.7702999711036682</td>
+                        <td>0.2324</td>
+                        <td>0.2222</td>
+                        <td><span class="badge badge-match">MATCH</span></td>
+                    </tr>
+        
+                    <tr>
+                        <td>image1.JPG</td>
+                        <td>image2.JPG</td>
+                        <td><b>0.0767</b></td>
+                        <td>0.11879999935626984</td>
+                        <td>0.0091</td>
+                        <td>0.0882</td>
+                        <td><span class="badge badge-no-match">PAS DE MATCH</span></td>
+                    </tr>
+        
+                    <tr>
+                        <td>image1.JPG</td>
+                        <td>image1.png</td>
+                        <td><b>0.0506</b></td>
+                        <td>0.08659999817609787</td>
+                        <td>-0.0634</td>
+                        <td>0.1166</td>
+                        <td><span class="badge badge-no-match">PAS DE MATCH</span></td>
+                    </tr>
+        
+                    <tr>
+                        <td>image1.JPG</td>
+                        <td>xavier-dupont-de-ligonnes-cet-etrange-tic-qui-le-trahit.jpeg</td>
+                        <td><b>-0.1037</b></td>
+                        <td>-0.3603000044822693</td>
+                        <td>0.049</td>
+                        <td>0.0857</td>
+                        <td><span class="badge badge-no-match">PAS DE MATCH</span></td>
+                    </tr>
+        
+                </table>
+            </div>
+            
+            <div class="section">
+                <h2>Méthodologie et interprétation</h2>
+                <p>Cette analyse utilise plusieurs techniques avancées de comparaison faciale pour déterminer si le suspect correspond à un individu recherché:</p>
+                <ul>
+                    <li><strong>Score de similarité global</strong>: Une valeur entre 0 et 1, où 1 représente une correspondance parfaite. Un score supérieur à 0.35 est considéré comme une correspondance potentielle.</li>
+                    <li><strong>Corrélation</strong>: Mesure la similarité directe entre les pixels des visages. Une valeur proche de 1 indique une forte ressemblance structurelle.</li>
+                    <li><strong>Similarité d'histogramme</strong>: Compare la distribution des intensités de pixels entre les visages, ce qui peut aider à identifier des correspondances même avec des différences d'éclairage.</li>
+                    <li><strong>SSIM (Indice de similarité structurelle)</strong>: Évalue la qualité perçue entre deux images en tenant compte des variations de luminosité, de contraste et de structure.</li>
+                </ul>
+                <div class="alert alert-warning">
+                    <p><strong>Note importante:</strong> Les résultats de cette analyse doivent être interprétés par un expert et ne constituent pas une preuve définitive d'identité. D'autres facteurs comme l'âge des photos, les conditions d'éclairage, l'angle de prise de vue et d'éventuelles modifications physiques peuvent influencer les résultats.</p>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>Procédure d'analyse</h2>
+                <ol>
+                    <li>Détection des visages dans les images à l'aide d'algorithmes de reconnaissance faciale</li>
+                    <li>Normalisation et prétraitement des images (redimensionnement, égalisation d'histogramme)</li>
+                    <li>Extraction des caractéristiques faciales</li>
+                    <li>Calcul de diverses métriques de similarité entre les visages</li>
+                    <li>Évaluation des scores par rapport aux seuils prédéfinis</li>
+                    <li>Classification des résultats comme correspondance ou non-correspondance</li>
+                </ol>
+                <p>Les seuils utilisés ont été calibrés pour minimiser les faux positifs tout en maintenant une sensibilité suffisante pour détecter des correspondances potentielles.</p>
+            </div>
+            
+            <div class="footer">
+                <p>Rapport généré automatiquement par le système d'analyse biométrique XDDL</p>
+                <p>© {datetime.now().year} - Ce document est confidentiel et réservé à un usage professionnel</p>
+            </div>
+        </div>
+        
+        <script>
+            // Animation de la barre de confiance
+            document.addEventListener('DOMContentLoaded', function() {
+                const confidenceFill = document.querySelector('.confidence-fill');
+                if (confidenceFill) {
+                    setTimeout(() => {
+                        confidenceFill.style.transition = 'width 1.5s ease-in-out';
+                        confidenceFill.style.width = confidenceFill.getAttribute('style').split('width:')[1];
+                    }, 300);
+                }
+            });
+        </script>
+    </body>
+    </html>
+    

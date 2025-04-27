@@ -1,0 +1,24 @@
+
+COMPARAISON COMPLÈTE AVEC TOUTES LES IMAGES DE XAVIER DUPONT DE LIGONNÈS
+========================================================================
+Image du suspect: image1.JPG
+Date de l'analyse: 27/04/2025 06:17:55
+
+MEILLEURS RÉSULTATS:
+- Score global: 0.3527
+- Meilleure corrélation: 0.6011999845504761 (image #1)
+- Meilleure similarité d'histogramme: 0.1836
+- Meilleur SSIM: 0.2856
+- Meilleure similarité des points faciaux: 0
+
+SCORES MOYENS:
+- Score global moyen: 0.0792
+- Corrélation moyenne: 0.09740000218153
+- Similarité d'histogramme moyenne: -0.0017
+- SSIM moyen: 0.2034
+- Similarité faciale moyenne: 0
+
+CONCLUSION:
+MATCH - Correspondance significative avec Xavier Dupont de Ligonnès
+
+Points caractéristiques correspondants les plus pertinents:
